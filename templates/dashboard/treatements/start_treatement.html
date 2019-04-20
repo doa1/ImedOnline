@@ -1,0 +1,115 @@
+{% extends 'dashboard/base.html' %}
+{% block title %} Treatement {% endblock %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+    <div class="row">
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Hello Dr {{ request.user.get_full_name }} <small>Patient Treatement Area </small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                {% if consultation%}
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+
+                      You are about to engage patient
+                <strong>{% if mypatient %}{{ mypatient.identity }} {% else %} {{ patient }} {% endif %}</strong>
+                <small class="pull-right">{{ online_status }} {% if online_status == "Online" %} <a href="{% url 'messaging:chat'  user.id mypatient.id %}">Chat with the patient</a> {% endif %}</small>
+                    </p>
+
+                        <h3>Patient Submission Details</h3>
+                      <div class="table-responsive">
+
+                        <table  class="table table-striped jambo_table bulk_action">
+                        <thead>
+                        <tr class="headings">
+                            <th class="column-title">Ailment Category</th>
+                            <th class="column-title">Ailment Period</th>
+                            <th class="column-title">Symptoms</th>
+                            <th class="column-title">Additional Info</th>
+                            <th class="column-title">Any medication taken</th>
+                            <th class="column-title">Media Info</th>
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ consultation.get_sickness_category_display }}</td>
+                                <td>{{ consultation.get_sickness_period_display }}</td>
+                                <td>{{ consultation.symptoms }}</td>
+                                <td>{{ consultation.previous_medication }}</td>
+                                <td>{{ consultation.other_info }}</td>
+                                <td>{% if  consultation.image %}
+                                    <img src="{{ consultation.image.url }}">
+                                    {% elif consultation.audio %}
+                                    <audio src="{{ consultation.audio.url }}" controls="controls"></audio>
+                                    {% elif cons.video %}
+                                    <video src="{{ consultation.video.url }}" controls="controls"></video>
+                                    {% else %}
+                                    No Media File
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                      </div>
+
+                      <div class="x_content">
+                       {% if messages %}
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                      <strong>Success!</strong>
+                        {% for message in messages %} {{ message }} {% endfor %}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                        </div>
+                        {% endif %}
+                    <form class="form-horizontal form-label-left" method="post">{% csrf_token %}
+
+                      <p>The above details corresponds to the ailment information submitted by the above patient <strong>{% if mypatient %}{{ mypatient.identity }} {% else %} {{ patient }} {% endif %}</strong> for diagnosis/treatement
+                      </p>
+                      <span class="section">Enter Diagnosis Results</span>
+
+                     {% bootstrap_form form layout='horizontal' %}
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <a  class="btn btn-primary" href="{% url 'dashboard:appointments-list' %}">Cancel</a>
+                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+        {% else %}
+                    <div class="alert alert-danger  fade in" role="alert">
+
+                    <h4 ><strong>Ooops!!</strong>
+                        Looks like the patient booked for an appointment but  hasn't submitted any sickness details or other reason for an  appointment yet.<br>
+            Kindly remind them to fill up the form and submit for better understanding for their issue</h4>
+                  </div>
+
+        {% endif %}
+    </div>
+    </div>
+</div>
+    </div>
+{% endblock %}

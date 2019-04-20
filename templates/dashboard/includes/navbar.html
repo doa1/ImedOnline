@@ -1,0 +1,39 @@
+<div class="sidebar" role="navigation">
+            <div class="navbar-collapse">
+				<nav class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
+					<ul class="nav" id="side-menu">
+						<li>
+							<a href="{% url 'dashboard:home' %}" class="active"><i class="fa fa-home nav_icon"></i>Dashboard</a>
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-cogs nav_icon"></i>Quick Links <span class="nav-badge">12</span> <span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="{% url 'dashboard:appointments-list' %}">Appointments</a>
+								</li>
+                                {% if request.user.is_doctor %}
+								<li>
+									<a href="{% url 'dashboard:emergencies_list' %}">Emergencies</a>
+								</li>
+                                {% endif %}
+							</ul>
+							<!-- /nav-second-level -->
+						</li>
+						<li>
+							<a href="#"><i class="fa fa-envelope nav_icon"></i>Mailbox<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level collapse">
+								<li>
+									<a href="#">Inbox <span class="nav-badge-btm">05</span></a>
+								</li>
+								<li>
+									<a href="#">Compose email</a>
+								</li>
+							</ul>
+							<!-- //nav-second-level -->
+						</li>
+
+					</ul>
+					<!-- //sidebar-collapse -->
+				</nav>
+			</div>
+		</div>

@@ -1,0 +1,80 @@
+{% extends 'main/base.html' %}
+
+{%block title %} Capture Details -{{block.super}}{%endblock%}
+{%load bootstrap4 %}
+{%block content %}
+<!-- banner 2 -->
+	<div class="inner-banner-w3ls">
+		<div class="container">
+
+		</div>
+		<!-- //banner 2 -->
+	</div>
+	<!-- page details -->
+	<div class="breadcrumb-agile">
+		<div aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="/">Home</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">About Us</li>
+			</ol>
+		</div>
+	</div>
+	<!-- //page details -->
+
+	<!-- about -->
+	<section class="about py-5">
+		<div class="container py-xl-5 py-lg-3">
+			<div class="w3ls-titles text-center mb-md-5 mb-4">
+				<h3 class="title text-capitalize">Account activation success</h3>
+				<span>
+					<i class="fas fa-user-md"></i>
+				</span>
+			</div>
+			<p class="text-info">
+          Thank you for your email confirmation.You account has now been activated.<br>
+          You can now set an account password to login.
+        </p>
+
+			</div>
+			<div class="d-flex">
+				<div class="appoint-img">
+
+				</div>
+				<div class="contact-right-w3l appoint-form">
+					<h5 class="title-w3 text-center text-capitalize mb-5">Kindly Set your password to proceed</h5>
+                    <div class="col-md-10 ml-3">
+                    {% if messages %}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>Error!</strong>
+                        {% for message in messages %} {{ message }} {% endfor %}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    {% endif %}
+                </div>
+					<form action="#" method="post">{% csrf_token %}
+                        {% bootstrap_form form %}
+
+						<input type="submit" value="Set Password" class="btn_apt">
+					</form>
+				</div>
+				<div class="clerafix"></div>
+			</div>
+
+    </section>
+
+{%endblock%}
+{% block js %}
+     <script>
+    $(document).ready(function () {
+        //modify the labels
+         $('label').addClass("col-form-label");
+         //toggle the doc and hospital fields approprietly
+        $('.login-button').hide()
+
+    });
+    </script>
+{% endblock %}

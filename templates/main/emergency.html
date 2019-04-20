@@ -1,0 +1,72 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% block content %}
+
+	<!-- banner 2 -->
+	<div class="inner-banner-w3ls">
+		<div class="container">
+
+		</div>
+		<!-- //banner 2 -->
+	</div>
+	<!-- page details -->
+	<div class="breadcrumb-agile">
+		<div aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="index.html">Home</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">Emergency</li>
+			</ol>
+		</div>
+	</div>
+	<!-- //page details -->
+	<!-- contact -->
+	<div class="appointment py-5">
+		<div class="py-xl-5 py-lg-3">
+			<div class="w3ls-titles text-center mb-5">
+				<h3 class="title">Report an Emergency</h3>
+				<span>
+					<i class="fas fa-user-md"></i>
+				</span>
+				<p class="mt-2">You are covered. Just enter the details and send to notify us and we'll be there with you.</p>
+                {% if messages %}
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                      <strong>Thanks!</strong>
+                        {% for message in messages %} {{ message }} {% endfor %}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                {% endif %}
+			</div>
+			<div class="d-flex">
+				<div class="emergency-img">
+
+				</div>
+				<div class="contact-right-w3l appoint-form">
+					<h5 class="title-w3 text-center mb-5">Fill your Emergency form</h5>
+					<form action="#" method="post">{% csrf_token %}
+                        {% bootstrap_form form %}
+
+						<input type="submit" value="Report Emergency?" class="btn_apt">
+					</form>
+				</div>
+				<div class="clerafix"></div>
+			</div>
+		</div>
+	</div>
+	<!-- //contact -->
+
+
+{% endblock %}
+{% block js %}
+     <script>
+    $(document).ready(function () {
+       $('label').addClass("col-form-label");
+    });
+    </script>
+{% endblock %}
+
+

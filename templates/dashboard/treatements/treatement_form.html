@@ -1,0 +1,68 @@
+{% extends 'dashboard/base.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% block title %} {{ block.super }} Treatement Area {% endblock %}
+{% block content %}
+<div class="row">
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Hello Patient <strong>{{ request.user.get_full_name }} </strong><small>Patient Treatement Area </small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+				<h3 class="title1">
+                <small class="pull-right">{% if online_status == 'Online' %}Doctor is Online<a href="{% url 'messaging:chat' request.user.id doctor.id %}"> Send Message</a> {% endif %}</small></h3>
+				<p class="text-capitalize " style="color: #8BC34A;margin-left: 2.6em">
+                    You are about to make a submission of your condition  to <strong>Dr {{appointment.doctors.get_full_name }}</strong>
+                <br>
+                       </p>
+
+				<div class="x_content">
+                       {% if messages %}
+
+                        <div class="alert alert-success alert-dismissible fade in" role="alert">
+                      <strong>Success!</strong>
+                        {% for message in messages %} {{ message }} {% endfor %}
+                      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+                    </button>
+                        </div>
+
+                        {% endif %}
+                    <form class="form-horizontal form-label-left" method="post">{% csrf_token %}
+
+                      <p> Kindly fill in this treatement form to initialize the treatement process. <br>
+                    Please note the 3 last fields are only for providing any additional information that would help the doctor to deeply understand your problem
+                                  </p>
+                      <span class="section">Enter Problems</span>
+
+                     {% bootstrap_form form layout='horizontal' %}
+                      <div class="ln_solid"></div>
+                      <div class="form-group">
+                        <div class="col-md-6 col-md-offset-3">
+                          <a  class="btn btn-primary" href="{% url 'dashboard:appointments-list' %}">Cancel</a>
+                          <button id="send" type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+			</div>
+    </div>
+    </div>
+{% endblock %}

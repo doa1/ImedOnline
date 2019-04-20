@@ -1,0 +1,155 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %} {{ block.super }} Treatements List {% endblock %}
+{% block content %}
+ <div class="row">
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h2>Treatements Done <small> {% if request.user.is_doctor %}Patients you have cleared so far {% else %} Your treatement results{% endif %}</small></h2>
+                    <ul class="nav navbar-right panel_toolbox">
+
+                      <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                      </li>
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                        <ul class="dropdown-menu" role="menu">
+                          <li><a href="#">Settings 1</a>
+                          </li>
+                          <li><a href="#">Settings 2</a>
+                          </li>
+                        </ul>
+                      </li>
+                      <li><a class="close-link"><i class="fa fa-close"></i></a>
+                      </li>
+                    </ul>
+                    <div class="clearfix"></div>
+                  </div>
+                {% if treatements.count > 0 %}
+                  <div class="x_content">
+                    <p class="text-muted font-13 m-b-30">
+                         {% if request.user.is_doctor %}This is the list of patients whom you've treated so far.{% else %}
+                             This is the list of your treatementments cleared/done so far.
+                        {% endif %}
+                       </p>
+
+                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        {% if request.user.is_doctor %}<th>Patient Name</th>{% else %}
+                           <th>Doctor Names</th>
+                            {% endif %}
+                        <th>Disease Found</th>
+                        <th>Sickness Period</th>
+                        <th>Diagnosis Results</th> <th>Prescription</th>
+                        <th>Diatery Advice</th>
+                        <th>Medical Advice</th>
+                        <th>Treatement Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for treatement in treatements %}
+                        <tr>
+                        <th scope="row">{{ forloop.counter  }}</th>
+                        <td>{% if request.user.is_doctor %}
+                            <button class="btn btn-info btn-sm" id="open-modal" type="button" data-href="{% url 'dashboard:treatement-detail-api' treatement.pk %}" data-toggle="modal">{{ treatement.appointment.patient_name }}</button>
+                        {% else %}
+                            <button class="btn btn-info btn-sm" id="open-modal" type="button" data-href="{% url 'dashboard:treatement-detail-api' treatement.pk %}" data-toggle="modal">{{ treatement.doctor.get_full_name }}</button>
+                            </td>
+                        {% endif %}
+                        <td>{{ treatement.disease}}</td>
+                        <td>{{ treatement.get_sickness_period_display }}</td>
+                        <td>{{ treatement.results }}</td>
+                        <td>{{ treatement.prescription }}</td>
+                        <td>{{ treatement.diatery_advice }}</td>
+                        <td>{{ treatement.medical_advice }}</td>
+                        <td>{{ treatement.date_cleared }} </td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+        </table>
+    {% else %}
+    <h3 class="text-capitalize text-warning text-center">No treatement results so far.</h3>
+    {% endif %}
+        </div>
+     </div>
+    </div>
+ </div>
+ <!--modal to show the details per treatement submission-->
+
+    <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+
+                        <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                          </button>
+                          <h4 class="modal-title" id="myModalLabel">Treatement Submission details</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                      <thead>
+                                      <tr class="headings">
+                                        <th class="column-title">Ailment Category</th>
+                                        <th class="column-title">Ailment Period</th>
+                                        <th class="column-title">Symptoms</th>
+                                        <th class="column-title">Additional Info</th>
+                                        <th class="column-title">Initial medication taken</th>
+                                        <th class="column-title">Media Assisting  Info</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr id="body">
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        <p>The above information indicates the first instance of the diagnosis as submitted by
+                        {% if request.user.is_doctor %}  the patient {% else %} you.{% endif %}
+                        </p>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript">
+        var modalClass = $('.bs-example-modal-lg');
+        $('#open-modal').on('click',function () {
+            $.ajax({
+                url: $(this).data('href'),
+                method:"GET",
+                success: function (data) {
+                    console.log("DATA", data);
+                    media_data ="None";
+                    if(data.image) {
+                        media_data ="<img src="+data.image+" class='img-responsive' style='width:120px;height:80px; display: block;'>"
+                    }
+                    else if(data.audio){
+                       media_data = "<img src="+data.image+">"
+                    }
+                    $('#body').html("<td>"+data.sickness_category +"</td><td>"+data.sickness_period+"</td><td>"+
+                    data.symptoms+"</td><td>"+data.other_info+"</td><td>"+data.previous_medication+"</td><td>"+media_data
+                    +"</td>");
+                    modalClass.modal()
+
+                },
+                error: function (errors) {
+                    console.log("Errors", errors);
+                }
+            })
+        })
+    </script>
+{% endblock %}

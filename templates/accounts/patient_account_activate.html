@@ -1,0 +1,21 @@
+{% autoescape off %}
+Hi {{ user.get_full_name}},
+You are receiving this email since you requested for an account signup at {{domain}}
+Please click on the link to confirm your registration,
+{% block reset_link %}
+http://{{ domain }}{% url 'profiles:activate' uidb64=uid token=token %}
+
+{% endblock %}
+You can safely ignore this message if this was a mistake!!
+
+Your temporary Default login password :{{user.random_password}}. in case your link expired before you could set one.
+Use the above and login then you can update to a more comprehensible pass
+
+IMPORTANT:
+        This password is only for first time login and will be destroyed automatically after 7 days.
+        Please consider changing this password immediately upon login.
+
+Thanks for using our site!
+
+The {{ domain}} team.
+{% endautoescape %}

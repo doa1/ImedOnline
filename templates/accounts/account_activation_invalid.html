@@ -1,0 +1,45 @@
+{% extends 'main/base.html' %}
+
+{%block title %} Capture Details -{{block.super}}{%endblock%}
+{%load bootstrap4 %}
+{%block content %}
+<!-- banner 2 -->
+	<div class="inner-banner-w3ls">
+		<div class="container">
+
+		</div>
+		<!-- //banner 2 -->
+	</div>
+	<!-- page details -->
+	<div class="breadcrumb-agile">
+		<div aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item">
+					<a href="/">Home</a>
+				</li>
+				<li class="breadcrumb-item active" aria-current="page">About Us</li>
+			</ol>
+		</div>
+	</div>
+	<!-- //page details -->
+
+	<!-- about -->
+	<section class="about py-5">
+		<div class="container py-xl-5 py-lg-3">
+			<div class="w3ls-titles text-center mb-md-5 mb-4">
+				<h3 class="title text-capitalize">Account activation unsuccessful</h3>
+				<span>
+					<i class="fas fa-user-md"></i>
+				</span>
+			</div>
+		<p class="text-danger text-center">
+            <strong>Soorry!</strong> The account activation link was invalid, possibly because it has already been used.<br>
+            If you did not initiate  this action,you can contact your admin
+            <br>
+            <strong>Recall </strong>This is always a one-time link and refreshing the page makes the link invalid
+        </p>
+
+    </div>
+    </section>
+
+{%endblock%}
